@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class floorrTransitionScript : MonoBehaviour
+public class FloorTransitionScript : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private string nextSceneName = "level1";
+    public string nextSceneName = "Level1";
     void Start()
     {
         
