@@ -19,7 +19,7 @@ public class FloorTransitionScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && collision.contacts[0].normal.y < 0.5f)
             SceneManager.LoadScene(nextSceneName);
     }
 }

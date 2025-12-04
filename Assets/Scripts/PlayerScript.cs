@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -35,21 +36,32 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            int scenesCount = SceneManager.sceneCountInBuildSettings;
+            Debug.Log($"Next Scene: {nextSceneIndex}, Scenes Count: {scenesCount}");
+            if(nextSceneIndex >= scenesCount)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                SceneManager.LoadScene(nextSceneIndex);
+            }
+
+        }
+
+        if (collision.gameObject.CompareTag("Floor") && collision.contacts[0].normal.y > 0.5f)
         {
             jumpsLeft = maxJumps;
         }
         
         // Se colidir com a plataforma móvel
-        if (collision.gameObject.CompareTag("MovingPlatform"))
+        if (collision.gameObject.CompareTag("MovingPlatform") && collision.contacts[0].normal.y > 0.5f)
         {
-            // Verifica se está pisando na plataforma (colisão pelo topo)
-            if (collision.contacts[0].normal.y > 0.5f)
-            {
-                // Torna a plataforma "pai" do player
-                transform.parent = collision.transform;
-                jumpsLeft = maxJumps; // Reseta pulos também na plataforma
-            }
+            transform.parent = collision.transform;
+            jumpsLeft = maxJumps;
         }
     }
 
