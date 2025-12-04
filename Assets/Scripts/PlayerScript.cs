@@ -32,6 +32,11 @@ public class PlayerScript : MonoBehaviour
             rb.AddForce(Vector2.up * jmpForce, ForceMode2D.Impulse);
             jumpsLeft--;
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -43,7 +48,7 @@ public class PlayerScript : MonoBehaviour
             Debug.Log($"Next Scene: {nextSceneIndex}, Scenes Count: {scenesCount}");
             if(nextSceneIndex >= scenesCount)
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene("Menu");
             }
             else
             {
@@ -57,11 +62,15 @@ public class PlayerScript : MonoBehaviour
             jumpsLeft = maxJumps;
         }
         
-        // Se colidir com a plataforma móvel
         if (collision.gameObject.CompareTag("MovingPlatform") && collision.contacts[0].normal.y > 0.5f)
         {
             transform.parent = collision.transform;
             jumpsLeft = maxJumps;
+        }
+
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            SceneManager.LoadScene("GameOver");
         }
     }
 
